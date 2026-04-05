@@ -14,25 +14,29 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [editing, setEditing] = useState<Product | null>(null);
   const [search, setSearch] = useState("");
-  const [dark, setDark] = useState(true);
+  // Start as false to avoid flash — localStorage will set the real value
+  const [dark, setDark] = useState(false);
 
-  // Load products and dark mode preference
+  // Load products and dark mode preference from localStorage
   useEffect(() => {
     const res = getProducts();
     if (res.success && res.data) setProducts(res.data);
 
     const saved = localStorage.getItem("dark");
-    if (saved === "true") setDark(true);
-    if (saved === "false") setDark(false);
+    // Default to dark=true if nothing saved yet
+    setDark(saved === null ? true : saved === "true");
   }, []);
 
-  // Apply dark mode to wrapper div
+  // Apply/remove "dark" class on #app-root whenever dark changes
   useEffect(() => {
     const appRoot = document.getElementById("app-root");
     if (!appRoot) return;
 
-    if (dark) appRoot.classList.add("dark");
-    else appRoot.classList.remove("dark");
+    if (dark) {
+      appRoot.classList.add("dark");
+    } else {
+      appRoot.classList.remove("dark");
+    }
 
     localStorage.setItem("dark", dark.toString());
   }, [dark]);
@@ -58,16 +62,18 @@ export default function Home() {
     }
   };
 
-  const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold flex items-center gap-2">🛍 Product Manager</h1>
+        <h1 className="text-3xl font-bold flex items-center gap-2"> Product Manager</h1>
         <button
           onClick={() => setDark(!dark)}
-          className="px-4 py-2 rounded bg-gray-800 text-white dark:bg-yellow-400 dark:text-black flex items-center gap-2"
+          className="px-4 py-2 rounded bg-gray-800 text-white dark:bg-yellow-400 dark:text-black flex items-center gap-2 transition-colors duration-300"
         >
           {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           {dark ? "Light" : "Dark"}

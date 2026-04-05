@@ -5,8 +5,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="transition-colors duration-300">
-        {/* This div is where dark/light mode toggle applies */}
-        <div id="app-root" className="min-h-screen bg-gray-100 text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
+        <div
+          id="app-root"
+          className="min-h-screen bg-gray-100 text-black dark:bg-gray-900 dark:text-white transition-colors duration-300"
+        >
           <Toaster position="top-right" />
           {children}
         </div>
