@@ -147,7 +147,8 @@ export const searchProducts = (query: string) => {
   if (!res.success || !res.data) return res;
 
   const filtered = res.data.filter((p) =>
-    p.name.toLowerCase().includes(query.toLowerCase())
+    p.name.toLowerCase().includes(query.toLowerCase())||
+    p.description.toLowerCase().includes(query.toLowerCase())
   );
 
   return {
