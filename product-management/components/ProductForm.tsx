@@ -72,7 +72,7 @@ export const ProductForm: React.FC<Props> = ({ onSave, editing }) => {
       />
       <input
         name="price"
-        type="number"
+        type="text"
         placeholder="Price"
         value={form.price}
         onChange={handleChange}
